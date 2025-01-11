@@ -1,8 +1,8 @@
-# Custom Avatar Loader Mod for Desktop Mate
+# Custom Avatar Loader Mod for Desktop Mate （日本語）
 
 <div align="center">
-You can support me and my work from Buy Me a Coffee!<br>
-Also, don't forget to join the Discord Server!<br>
+Buy me a Coffeeでプロジェクトをサポート！<br>
+Discord サーバーへの参加も忘れずに！<br>
 <a href="https://buymeacoffee.com/sergiomarquina">
 <img src="https://i.imgur.com/l7NBjqk.png" alt="drawing" width="150" height="45" align="center">
 </a>
@@ -11,26 +11,25 @@ Also, don't forget to join the Discord Server!<br>
 </a>
   <br><br>
 </div>
-This mod lets you use any .VRM file model you want inside of Desktop Mate!
+このMODはVRMモデル(.vrmファイル）読み込み、好きなキャラをDesktop Mateで使用可能にします!
 
-## Installation
-- Install the latest [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) version to DesktopMate (v0.6.6 is the recommended one)
-- Install .NET Runtime 6.0 from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)
-- Download [Custom Avatar Loader.zip](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/releases/latest/download/CustomAvatarLoader.zip) from here or Releases section on the right
-- Extract the contents **in the Desktop Mate folder**
+## 導入方法
+- 最新版の [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) をDesktopMateに導入 (v0.6.6 推奨)
+- こちらの.NET Runtime 6.0をインストール [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)
+- MOD本体を [Custom Avatar Loader.zip](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/releases/latest/download/CustomAvatarLoader.zip) こちらのリンク、或いは右のReleasesからDL
+- ファイルを**Desktop Mateフォルダ内に**解凍
 
-## Usage
-- Initial startup of Desktop Mate will take a while as IL2CPP needs to decompile the game binary
-- After that, click on your character and press F4
-- A file dialog will open. Choose any VRM file that you want (make sure it's in a folder that you have permission)
-- And your model should immediately appear!
+## 使用方法
+- 初期起動時はIL2CPP経由でゲーム本体を解凍するため、少し時間が掛かります
+- 起動後、 Desktop Mate上でキャラをクリックしてF4キーを押す
+- ファイル選択ウィンドウが開くので、あらかじめ用意したVRMモデルを選択 <br>（自分のアカウントが権限を持っているフォルダにファイルがある事を確認してください）
+- ファイル選択後、すぐにキャラクターが選択したアバターに切り替わります！
 
-### You can also access a video tutorial from [here](https://youtu.be/CqjfT6QzRLM)
+### チュートリアル動画も[こちら](https://youtu.be/CqjfT6QzRLM)から確認できます（注：英語のみ）
 
-## Notes for Development
-- Make sure you have .NET Runtime 6.0 and .NET Desktop Support installed for Visual Studio
-- Install [MelonLoader's VSIX](https://github.com/TrevTV/MelonLoader.VSWizard/releases) for developing mods
-- Also, you might need to install Desktop Mate into C drive as it might behave a bit unexpected
-
-# License
-Check the [LICENSE.md](LICENSE.md) file for details
+## 開発者向け開発者向け注意事項
+- ランタイム(.NET Runtime 6.0)とVisual Studio用の.NET Desktop Supportがインストールされていること
+- MOD制作を行う場合[MelonLoader's VSIX](https://github.com/TrevTV/MelonLoader.VSWizard/releases)をインストールすること
+- 他のドライブにインストールされている場合動作が不安定なため、Desktop MateをC:ドライブにインストールすること
+# ライセンス
+勝敗は下記ファイル [LICENSE.md](LICENSE.md) を確認ください
