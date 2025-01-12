@@ -15,16 +15,16 @@ public class Core : MelonMod
     private bool _init;
 
     protected virtual IServiceProvider Services { get; }
-    
+
     private Logging.ILogger Logger { get; set; }
 
     private GitHubVersionChecker VersionChecker { get; set; }
-    
+
     private Updater Updater { get; set; }
-    
+
     private FileHelper FileHelper { get; set; }
     private VrmLoader VrmLoader { get; set; }
-    
+
     private CharaLoader CharaLoader { get; set; }
 
     private string CurrentVersion { get; set; }
@@ -46,10 +46,30 @@ public class Core : MelonMod
 
         if (CurrentVersion == "0")
             Logger.Warn("CurrentVersion is 0, faulty module version?");
-        
+
         // Initialize your preferences
         Settings = MelonPreferences.CreateCategory("settings");
         VrmPath = Settings.CreateEntry("vrmPath", "");
+
+        // Remove the contents of the log file and set it as readonly
+        string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow", "infiniteloop", "DesktopMate");
+
+        string playerLog = Path.Join(logPath, "Player.log");
+        string playerPrevLog = Path.Join(logPath, "Player-prev.log");
+
+        if (File.Exists(playerLog))
+        {
+            File.SetAttributes(playerLog, FileAttributes.Normal);
+            try { File.WriteAllText(playerLog, string.Empty); } catch { /* empty */ }
+            File.SetAttributes(playerLog, FileAttributes.ReadOnly);
+        }
+
+        if (File.Exists(playerPrevLog))
+        {
+            File.SetAttributes(playerPrevLog, FileAttributes.Normal);
+            try { File.WriteAllText(playerPrevLog, string.Empty); } catch { /* empty */ }
+            File.SetAttributes(playerPrevLog, FileAttributes.ReadOnly);
+        }
 
         var hasLatestVersion = VersionChecker.IsLatestVersionInstalled(CurrentVersion);
 
