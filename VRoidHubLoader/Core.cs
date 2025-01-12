@@ -1,27 +1,22 @@
 ﻿namespace CustomAvatarLoader;
 
-using CustomAvatarLoader.Chara;
 using CustomAvatarLoader.Helpers;
 using CustomAvatarLoader.Modules;
 using Logging;
 using MelonLoader;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using UnityEngine;
 using Versioning;
 
 public class Core : MelonMod
 {
     private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
-    private bool _init;
     
     private Logging.ILogger Logger { get; set; }
 
     private GitHubVersionChecker VersionChecker { get; set; }
     
     private Updater Updater { get; set; }
-    
-    private CharaLoader CharaLoader { get; set; }
 
     private string CurrentVersion { get; set; }
 
