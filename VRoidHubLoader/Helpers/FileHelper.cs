@@ -1,15 +1,23 @@
 ﻿using System.Runtime.InteropServices;
+using CustomAvatarLoader.Logging;
 
-namespace CustomAvatarLoader;
+namespace CustomAvatarLoader.Helpers;
 
-public static class FileHelper
+public class FileHelper
 {
+    public string OpenFileDialog()
+    {
+        var ofn = GetOpenFileName();
+
+        return GetOpenFileName(ofn) ? ofn.file : null;
+    }
+    
     [DllImport("comdlg32.dll", SetLastError = true, CharSet = CharSet.Auto)]
     private static extern bool GetOpenFileName([In, Out] OpenFileName ofn);
 
-    public static string OpenFileDialog()
+    private OpenFileName GetOpenFileName()
     {
-        OpenFileName ofn = new OpenFileName();
+        OpenFileName ofn = new();
 
         ofn.structSize = Marshal.SizeOf(ofn);
         ofn.filter = "VRM Files\0*.vrm\0";
@@ -21,12 +29,7 @@ public static class FileHelper
         ofn.title = "Open VRM File";
         ofn.flags = 0x00080000 | 0x00000008; // OFN_EXPLORER | OFN_FILEMUSTEXIST
 
-        if (GetOpenFileName(ofn))
-        {
-            return ofn.file;
-        }
-
-        return null;
+        return ofn;
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
