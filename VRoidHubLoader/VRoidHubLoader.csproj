@@ -413,7 +413,6 @@
 
 	<ItemGroup>
 		<Compile Include="AssemblyInfo.cs" />
-		<Compile Include="Chara\CharaLoader.cs" />
 		<Compile Include="Core.cs" />
 		<Compile Include="Helpers\FileHelper.cs" />
 		<Compile Include="Helpers\Updater.cs" />
@@ -427,6 +426,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="ilmerge" Version="3.0.41" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
 	</ItemGroup>
 	
