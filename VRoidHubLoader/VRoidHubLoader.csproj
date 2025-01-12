@@ -426,7 +426,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ilmerge" Version="3.0.41" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
 	</ItemGroup>
 	
