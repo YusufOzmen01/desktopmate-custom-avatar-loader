@@ -1,18 +1,19 @@
-﻿using CustomAvatarLoader.Chara;
-using CustomAvatarLoader.Helpers;
-
-namespace CustomAvatarLoader;
+﻿namespace CustomAvatarLoader;
 
 using Logging;
 using Versioning;
 using MelonLoader;
 using UnityEngine;
 using System.Reflection;
+using CustomAvatarLoader.Chara;
+using CustomAvatarLoader.Helpers;
 
 public class Core : MelonMod
 {
     private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
     private bool _init;
+    private IntPtr _hWnd;
+    private string pathSelected = "";
 
     protected virtual IServiceProvider Services { get; }
 
@@ -26,6 +27,7 @@ public class Core : MelonMod
     private VrmLoader VrmLoader { get; set; }
 
     private CharaLoader CharaLoader { get; set; }
+    private WindowHelper WindowHelper { get; set; }
 
     private string CurrentVersion { get; set; }
 
@@ -42,7 +44,10 @@ public class Core : MelonMod
         Updater = new Updater(RepositoryName, Logger);
         FileHelper = new FileHelper();
         VrmLoader = new VrmLoader(Logger);
+        WindowHelper = new WindowHelper(Logger);
         CharaLoader = new CharaLoader(Logger, VrmLoader);
+
+        _hWnd = WindowHelper.GetUnityGameHwnd();
 
         if (CurrentVersion == "0")
             Logger.Warn("CurrentVersion is 0, faulty module version?");
@@ -52,7 +57,8 @@ public class Core : MelonMod
         VrmPath = Settings.CreateEntry("vrmPath", "");
 
         // Remove the contents of the log file and set it as readonly
-        string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow", "infiniteloop", "DesktopMate");
+        string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow",
+            "infiniteloop", "DesktopMate");
 
         string playerLog = Path.Join(logPath, "Player.log");
         string playerPrevLog = Path.Join(logPath, "Player-prev.log");
@@ -60,14 +66,30 @@ public class Core : MelonMod
         if (File.Exists(playerLog))
         {
             File.SetAttributes(playerLog, FileAttributes.Normal);
-            try { File.WriteAllText(playerLog, string.Empty); } catch { /* empty */ }
+            try
+            {
+                File.WriteAllText(playerLog, string.Empty);
+            }
+            catch
+            {
+                /* empty */
+            }
+
             File.SetAttributes(playerLog, FileAttributes.ReadOnly);
         }
 
         if (File.Exists(playerPrevLog))
         {
             File.SetAttributes(playerPrevLog, FileAttributes.Normal);
-            try { File.WriteAllText(playerPrevLog, string.Empty); } catch { /* empty */ }
+            try
+            {
+                File.WriteAllText(playerPrevLog, string.Empty);
+            }
+            catch
+            {
+                /* empty */
+            }
+
             File.SetAttributes(playerPrevLog, FileAttributes.ReadOnly);
         }
 
@@ -81,19 +103,36 @@ public class Core : MelonMod
         {
             Logger.Info("[VersionCheck] Latest version installed");
         }
+
+        WindowHelper.SetWindowForeground(_hWnd);
     }
 
     public override void OnUpdate()
     {
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            string path = FileHelper.OpenFileDialog();
-            if (!string.IsNullOrEmpty(path) && CharaLoader.LoadCharacter(path))
+            WindowHelper.MinimizeGameWindow(_hWnd);
+            Task.Run(() =>
             {
-                VrmPath.Value = path;
+                pathSelected = FileHelper.OpenFileDialog(); 
+                
+                Thread.Sleep(100); 
+                WindowHelper.UnminimizeGameWindow(_hWnd); 
+                WindowHelper.SetWindowForeground(_hWnd);
+            });
+        }
+
+        if (!string.IsNullOrEmpty(pathSelected))
+        {
+            if (CharaLoader.LoadCharacter(pathSelected))
+            {
+                VrmPath.Value = pathSelected;
                 _init = true;
+
                 MelonPreferences.Save();
             }
+
+            pathSelected = "";
         }
 
         if (!_init && GameObject.Find("/CharactersRoot").transform.GetChild(0) != null)

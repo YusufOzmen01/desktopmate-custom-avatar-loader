@@ -3,6 +3,7 @@ using CustomAvatarLoader.Modules;
 using Il2Cpp;
 using UnityEngine;
 using ILogger = CustomAvatarLoader.Logging.ILogger;
+using Object = UnityEngine.Object;
 
 namespace CustomAvatarLoader.Chara;
 
@@ -34,7 +35,7 @@ public class CharaLoader
         RuntimeAnimatorController = chara.GetComponent<Animator>().runtimeAnimatorController;
 
         _logger.Debug("Character attributes have been copied. Removing existing character...");
-        UnityEngine.Object.Destroy(chara);
+        Object.Destroy(chara);
 
         GameObject newChara = _vrmLoader.LoadVrmIntoScene(path);
         if (newChara == null)
