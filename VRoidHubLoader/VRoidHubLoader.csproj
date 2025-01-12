@@ -418,6 +418,7 @@
 		<Compile Include="Helpers\FileHelper.cs" />
 		<Compile Include="Helpers\Updater.cs" />
 		<Compile Include="Helpers\VrmLoader.cs" />
+		<Compile Include="Helpers\AsyncHelper.cs" />
 		<Compile Include="Logging\ILogger.cs" />
 		<Compile Include="Logging\MelonLoaderLogger.cs" />
 		<Compile Include="Modules\IModule.cs" />

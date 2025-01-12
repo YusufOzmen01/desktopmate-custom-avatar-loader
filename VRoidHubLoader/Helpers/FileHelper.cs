@@ -5,11 +5,11 @@ namespace CustomAvatarLoader.Helpers;
 
 public class FileHelper
 {
-    public string OpenFileDialog()
+    public Task<string> OpenFileDialog()
     {
         var ofn = GetOpenFileName();
 
-        return GetOpenFileName(ofn) ? ofn.file : null;
+        return Task.Run(() => GetOpenFileName(ofn) ? ofn.file : null);
     }
     
     [DllImport("comdlg32.dll", SetLastError = true, CharSet = CharSet.Auto)]

@@ -33,6 +33,8 @@ public class Core : MelonMod
     
     private CharaLoader CharaLoader { get; set; }
 
+    private AsyncHelper AsyncHelper { get; set; }
+
     private string CurrentVersion { get; set; }
 
     private MelonPreferences_Category Settings { get; set; }
@@ -49,6 +51,7 @@ public class Core : MelonMod
         FileHelper = new FileHelper();
         VrmLoader = new VrmLoader(Logger);
         CharaLoader = new CharaLoader(Logger, VrmLoader);
+        AsyncHelper = new AsyncHelper();
 
         if (CurrentVersion == "0")
             Logger.Warn("CurrentVersion is 0, faulty module version?");
@@ -69,17 +72,26 @@ public class Core : MelonMod
         }
     }
 
-    public override void OnUpdate()
+    private async void ShowChooseModelWindow()
     {
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            string path = FileHelper.OpenFileDialog();
+        string path = await FileHelper.OpenFileDialog();
+        AsyncHelper.RunOnMainThread(() => {
             if (!string.IsNullOrEmpty(path) && CharaLoader.LoadCharacter(path))
             {
                 VrmPath.Value = path;
                 _init = true;
                 MelonPreferences.Save();
             }
+        });
+    }
+
+    public override void OnUpdate()
+    {
+        AsyncHelper.OnUpdate();
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            ShowChooseModelWindow();
         }
 
         if (!_init && GameObject.Find("/CharactersRoot").transform.GetChild(0) != null)
