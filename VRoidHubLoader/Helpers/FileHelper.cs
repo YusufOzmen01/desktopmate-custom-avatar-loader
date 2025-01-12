@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using CustomAvatarLoader.Logging;
 
 namespace CustomAvatarLoader.Helpers;
 

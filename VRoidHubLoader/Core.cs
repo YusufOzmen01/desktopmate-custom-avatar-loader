@@ -4,14 +4,8 @@ using CustomAvatarLoader.Helpers;
 namespace CustomAvatarLoader;
 
 using Logging;
-using Modules;
 using Versioning;
-using Il2Cpp;
-using Il2CppUniGLTF;
-using Il2CppUniVRM10;
 using MelonLoader;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using System.Reflection;
 

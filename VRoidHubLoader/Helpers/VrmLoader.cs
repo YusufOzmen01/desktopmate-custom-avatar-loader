@@ -1,7 +1,5 @@
-﻿using Il2Cpp;
-using Il2CppUniGLTF;
+﻿using Il2CppUniGLTF;
 using Il2CppUniVRM10;
-using Il2CppUniGLTF;
 using UnityEngine;
 using ILogger = CustomAvatarLoader.Logging.ILogger;
 
