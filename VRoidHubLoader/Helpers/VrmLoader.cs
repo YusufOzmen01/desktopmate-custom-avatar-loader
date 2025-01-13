@@ -1,11 +1,9 @@
-﻿using Il2Cpp;
+﻿namespace CustomAvatarLoader.Helpers;
+
 using Il2CppUniGLTF;
 using Il2CppUniVRM10;
-using Il2CppUniGLTF;
 using UnityEngine;
-using ILogger = CustomAvatarLoader.Logging.ILogger;
-
-namespace CustomAvatarLoader.Helpers;
+using ILogger = Logging.ILogger;
 
 public class VrmLoader
 {
