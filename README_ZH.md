@@ -23,9 +23,9 @@
 - 因为IL2CPP需要对游戏二进制文件进行反编译，第一次启动Desktop Mate可能需要花一段时间
 - 之后，点击角色并按F4
 - 一个对话文件会被打开。选择你想要的VRM文件（确保其放在您有许可的文件夹内）
-- And your model should immediately appear!
+- 然后你的模型立即就会出现了！
 
-### 你也可以通过[这里](https://youtu.be/CqjfT6QzRLM)来观看视频教程
+### 你也可以通过[点击这里](https://youtu.be/CqjfT6QzRLM)来观看视频教程
 
 ## 开发说明
 - 确保您的Visual Studio中有 .NET Runtime 6.0 和 .NET Desktop Support 
