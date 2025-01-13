@@ -24,15 +24,18 @@ public class VrmLoaderModule : IModule
 
     protected virtual RuntimeAnimatorController RuntimeAnimatorController { get; set; }
 
-    private MelonPreferences_Entry<string> VrmPath { get; set; }
+    protected virtual MelonPreferences_Entry<string> VrmPath { get; set; }
+
+    protected virtual AsyncHelper AsyncHelper { get; set; }
 
     public void OnInitialize()
     {
         var settings = MelonPreferences.CreateCategory("settings");
         VrmPath = settings.CreateEntry("vrmPath", "");
+        AsyncHelper = new AsyncHelper();
     }
 
-    public void OnUpdate()
+    public async void OnUpdate()
     {
         if (!init)
         {
@@ -45,21 +48,25 @@ public class VrmLoaderModule : IModule
             init = true;
         }
 
+        AsyncHelper.OnUpdate();
+
         if (Input.GetKeyDown(KeyCode.F4))
         {
             Logger.Debug($"OnUpdate: VrmLoaderModule F4 pressed");
 
             var fileHelper = new FileHelper();
 
-            string path = fileHelper.OpenFileDialog();
+            string path = await fileHelper.OpenFileDialog();
 
-            if (!string.IsNullOrEmpty(path) && LoadCharacter(path))
-            {
-                VrmPath.Value = path;
-                MelonPreferences.Save();
+            AsyncHelper.RunOnMainThread(() => {
+                if (!string.IsNullOrEmpty(path) && LoadCharacter(path))
+                {
+                    VrmPath.Value = path;
+                    MelonPreferences.Save();
 
-                Logger.Debug($"OnUpdate: VrmLoaderModule file chosen");
-            }
+                    Logger.Debug($"OnUpdate: VrmLoaderModule file chosen");
+                }
+            });
         }
     }
 
