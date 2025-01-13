@@ -427,28 +427,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
-	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;$(GamePath)\Mods&quot;" />
-	</Target>
-
-	<Target Name="ILRepacker" AfterTargets="Build">
-        <PropertyGroup>
-            <WorkingDirectory>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)</WorkingDirectory>
-        </PropertyGroup>
-
-        <ItemGroup>
-            <InputAssemblies Include="Microsoft.Extensions.DependencyInjection.dll" />
-            <InputAssemblies Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
-            <InputAssemblies Include="CustomAvatarLoader.dll" />
-      		<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'System.Text.Json'" />
-      		<InputAssemblies Include="@(ReferencePathWithRefAssemblies)" Condition="'%(filename)' == 'System.Runtime'" />
-        </ItemGroup>
-
-        <ILRepack OutputType="$(OutputType)" MainAssembly="$(AssemblyName).dll" OutputAssembly="$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" WorkingDirectory="$(WorkingDirectory)" />
-    </Target>
 </Project>
