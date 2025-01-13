@@ -10,17 +10,13 @@ using Versioning;
 
 public class Core : MelonMod
 {
-    private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
+    protected const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
     
-    private ILogger Logger { get; set; }
+    protected virtual ILogger Logger { get; private set; }
 
-    private GitHubVersionChecker VersionChecker { get; set; }
-    
-    private Updater Updater { get; set; }
+    protected virtual IServiceProvider ServiceProvider { get; private set; }
 
-    protected IServiceProvider ServiceProvider { get; private set; }
-
-    protected IEnumerable<IModule> Modules { get; private set; }
+    protected virtual IEnumerable<IModule> Modules { get; private set; }
 
     public override void OnInitializeMelon()
     {
@@ -29,21 +25,23 @@ public class Core : MelonMod
         ServiceProvider = services.BuildServiceProvider();
 
         Modules = ServiceProvider.GetServices<IModule>();
+        Logger = ServiceProvider.GetService<ILogger>();
+
+        var versionChecker = new GitHubVersionChecker(RepositoryName, Logger);
+        var updater = new Updater(RepositoryName, Logger);
 
         var currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
 
-        Logger = new MelonLoaderLogger(LoggerInstance);
-        VersionChecker = new GitHubVersionChecker(RepositoryName, Logger);
-        Updater = new Updater(RepositoryName, Logger);
-
         if (currentVersion == "0")
+        {
             Logger.Warn("CurrentVersion is 0, faulty module version?");
+        }
         
-        var hasLatestVersion = VersionChecker.IsLatestVersionInstalled(currentVersion);
+        var hasLatestVersion = versionChecker.IsLatestVersionInstalled(currentVersion);
 
         if (!hasLatestVersion)
         {
-            Updater.ShowUpdateMessageBox();
+            updater.ShowUpdateMessageBox();
         }
         else
         {
@@ -56,7 +54,7 @@ public class Core : MelonMod
         }
     }
 
-    private void ConfigureServices(IServiceCollection services)
+    protected virtual void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton(typeof(MelonLogger.Instance), LoggerInstance);
         services.AddScoped(typeof(Logging.ILogger), typeof(MelonLoaderLogger));
