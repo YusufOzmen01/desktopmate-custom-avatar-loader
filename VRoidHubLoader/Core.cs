@@ -12,13 +12,11 @@ public class Core : MelonMod
 {
     private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
     
-    private Logging.ILogger Logger { get; set; }
+    private ILogger Logger { get; set; }
 
     private GitHubVersionChecker VersionChecker { get; set; }
     
     private Updater Updater { get; set; }
-
-    private string CurrentVersion { get; set; }
 
     protected IServiceProvider ServiceProvider { get; private set; }
 
@@ -32,16 +30,16 @@ public class Core : MelonMod
 
         Modules = ServiceProvider.GetServices<IModule>();
 
-        CurrentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
+        var currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
 
         Logger = new MelonLoaderLogger(LoggerInstance);
         VersionChecker = new GitHubVersionChecker(RepositoryName, Logger);
         Updater = new Updater(RepositoryName, Logger);
 
-        if (CurrentVersion == "0")
+        if (currentVersion == "0")
             Logger.Warn("CurrentVersion is 0, faulty module version?");
         
-        var hasLatestVersion = VersionChecker.IsLatestVersionInstalled(CurrentVersion);
+        var hasLatestVersion = VersionChecker.IsLatestVersionInstalled(currentVersion);
 
         if (!hasLatestVersion)
         {
