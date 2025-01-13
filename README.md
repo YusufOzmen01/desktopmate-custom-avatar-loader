@@ -1,5 +1,5 @@
 # Custom Avatar Loader Mod for Desktop Mate
-## [Русский](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_RU.md) / [日本語](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_JP.md)
+## [Русский](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_RU.md) / [日本語](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_JP.md) / [简体中文](https://github.com/yuhan2680/desktopmate-custom-avatar-loader/blob/main/README_ZH.md)
 
 <div align="center">
 You can support me and my work from Buy Me a Coffee!<br>
