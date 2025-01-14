@@ -35,3 +35,7 @@ This mod lets you use any .VRM file model you want inside of Desktop Mate!
 
 # License
 Check the [LICENSE.md](LICENSE.md) file for details
+
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=YusufOzmen01/desktopmate-custom-avatar-loader&type=Date)](https://star-history.com/#YusufOzmen01/desktopmate-custom-avatar-loader&Date)

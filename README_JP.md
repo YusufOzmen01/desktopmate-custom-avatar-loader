@@ -36,3 +36,7 @@ Discordサーバーへの参加も忘れずに！<br>
 詳細は[LICENSE.md](LICENSE.md)をご確認ください
 
 翻訳者: [モブ](https://x.com/Trinity_96MOB)
+
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=YusufOzmen01/desktopmate-custom-avatar-loader&type=Date)](https://star-history.com/#YusufOzmen01/desktopmate-custom-avatar-loader&Date)

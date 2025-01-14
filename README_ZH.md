@@ -33,3 +33,7 @@
 - 另外，因为其可能发生一些意外，你可能需要在C盘安装Desktop Mateas
 # 许可
 点击[LICENSE.md](LICENSE.md)文件以查看更多信息
+
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=YusufOzmen01/desktopmate-custom-avatar-loader&type=Date)](https://star-history.com/#YusufOzmen01/desktopmate-custom-avatar-loader&Date)

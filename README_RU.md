@@ -35,6 +35,10 @@
 # Линцензия
 Просмотрите файл [LICENSE.md](LICENSE.md) для подробностей 
 
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=YusufOzmen01/desktopmate-custom-avatar-loader&type=Date)](https://star-history.com/#YusufOzmen01/desktopmate-custom-avatar-loader&Date)
+
 
 
 Перевели на русский: [AR34](https://github.com/ArThirtyFour) / [neppedboy](https://github.com/neppedboy)
