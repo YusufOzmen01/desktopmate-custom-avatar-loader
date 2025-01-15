@@ -4,9 +4,11 @@ using CustomAvatarLoader.Settings;
 namespace CustomAvatarLoader.Modules;
 
 using CustomAvatarLoader.Helpers;
+using CustomAvatarLoader.Patches;
 using Il2Cpp;
 using MelonLoader;
 using MelonLoader.Utils;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using ILogger = Logging.ILogger;
@@ -48,6 +50,8 @@ public class VrmLoaderModule : IModule
             Directory.CreateDirectory(VrmFolderPath);
             Logger.Debug("[Chara Loader] VRM folder does not exist. Creating one...");
         }
+
+        ModelPageManagerPatch.InitPatch(Logger, SettingsProvider, this);
     }
 
     public async void OnUpdate()
@@ -61,8 +65,6 @@ public class VrmLoaderModule : IModule
                 LoadCharacter(vrmPath);
             }
 
-            GenerateButtons();
-
             init = true;
         }
 
@@ -75,41 +77,17 @@ public class VrmLoaderModule : IModule
             // MenuManager is a singleton? sweet.
             if (!MenuManager.Instance.IsOpen)
             {
-                MenuManager.Instance.OpenRootPage();
-                MenuManager.Instance.OpenPage(MenuManager.Instance.modelPage);
+                MelonCoroutines.Start(CoAutoOpenModelPage());
             }
         }
     }
 
-    // this should be put into a harmony patch at some point
-    private void GenerateButtons()
+    private IEnumerator CoAutoOpenModelPage()
     {
-        GameObject mikuButton = GameObject.Find("Content/mikuButton");
-        float offset = 0.32f;
-        foreach (string path in Directory.GetFiles(VrmFolderPath).Where(f => f.EndsWith(".vrm")))
-        {
-            string file = Path.GetFileName(path);
-            string name = file.Split('.')[0];
-            GameObject button = DefaultControls.CreateButton(new DefaultControls.Resources());
-            button.transform.position = new Vector3(0.83f, offset, -1f);
-            button.transform.localScale = new Vector3(1.5f, 1.2f, 1f);
-            button.name = name + "_button";
-            button.GetComponentInChildren<Text>().text = name;
-            button.GetComponent<Button>().onClick.AddListener(new Action(() =>
-            {
-                if (LoadCharacter(path))
-                {
-                    SettingsProvider.Set("vrmPath", path);
-                    MelonPreferences.Save();
-
-                    Logger.Debug("OnUpdate: VrmLoaderModule file chosen");
-                }
-            }));
-            button.transform.SetParent(mikuButton.transform.parent.transform);
-            Logger.Info("Loaded VRM " + file);
-            offset -= 0.32f;
-        }
-        Logger.Debug("[Chara Loader] Custom menu buttons generated");
+        MenuManager.Instance.OpenRootPage();
+        while (MenuManager.Instance.isMoving)
+            yield return null;
+        MenuManager.Instance.OpenPage(MenuManager.Instance.modelPage);
     }
 
     public bool LoadCharacter(string path)
