@@ -6,7 +6,9 @@ namespace CustomAvatarLoader.Modules;
 using CustomAvatarLoader.Helpers;
 using Il2Cpp;
 using MelonLoader;
+using MelonLoader.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 using ILogger = Logging.ILogger;
 
 public class VrmLoaderModule : IModule
@@ -34,10 +36,18 @@ public class VrmLoaderModule : IModule
     private static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
     
     protected virtual AsyncHelper AsyncHelper { get; set; }
-     
+
+    public readonly string VrmFolderPath = MelonEnvironment.GameRootDirectory + @"\VRM";
+
     public void OnInitialize()
     {
         AsyncHelper = new AsyncHelper();
+
+        if (!Directory.Exists(VrmFolderPath))
+        {
+            Directory.CreateDirectory(VrmFolderPath);
+            Logger.Debug("[Chara Loader] VRM folder does not exist. Creating one...");
+        }
     }
 
     public async void OnUpdate()
@@ -51,6 +61,8 @@ public class VrmLoaderModule : IModule
                 LoadCharacter(vrmPath);
             }
 
+            GenerateButtons();
+
             init = true;
         }
 
@@ -58,22 +70,46 @@ public class VrmLoaderModule : IModule
 
         if (Input.GetKeyDown(KeyCode.F4))
         {
-            Logger.Debug($"OnUpdate: VrmLoaderModule F4 pressed");
+            Logger.Debug("OnUpdate: VrmLoaderModule F4 pressed");
 
-            var fileHelper = new FileHelper();
+            // MenuManager is a singleton? sweet.
+            if (!MenuManager.Instance.IsOpen)
+            {
+                MenuManager.Instance.OpenRootPage();
+                MenuManager.Instance.OpenPage(MenuManager.Instance.modelPage);
+            }
+        }
+    }
 
-            string path = await fileHelper.OpenFileDialog();
-
-            AsyncHelper.RunOnMainThread(() => {
-                if (!string.IsNullOrEmpty(path) && LoadCharacter(path))
+    // this should be put into a harmony patch at some point
+    private void GenerateButtons()
+    {
+        GameObject mikuButton = GameObject.Find("Content/mikuButton");
+        float offset = 0.32f;
+        foreach (string path in Directory.GetFiles(VrmFolderPath).Where(f => f.EndsWith(".vrm")))
+        {
+            string file = Path.GetFileName(path);
+            string name = file.Split('.')[0];
+            GameObject button = DefaultControls.CreateButton(new DefaultControls.Resources());
+            button.transform.position = new Vector3(0.83f, offset, -1f);
+            button.transform.localScale = new Vector3(1.5f, 1.2f, 1f);
+            button.name = name + "_button";
+            button.GetComponentInChildren<Text>().text = name;
+            button.GetComponent<Button>().onClick.AddListener(new Action(() =>
+            {
+                if (LoadCharacter(path))
                 {
                     SettingsProvider.Set("vrmPath", path);
                     MelonPreferences.Save();
 
-                    Logger.Debug($"OnUpdate: VrmLoaderModule file chosen");
+                    Logger.Debug("OnUpdate: VrmLoaderModule file chosen");
                 }
-            });
+            }));
+            button.transform.SetParent(mikuButton.transform.parent.transform);
+            Logger.Info("Loaded VRM " + file);
+            offset -= 0.32f;
         }
+        Logger.Debug("[Chara Loader] Custom menu buttons generated");
     }
 
     public bool LoadCharacter(string path)
@@ -85,7 +121,8 @@ public class VrmLoaderModule : IModule
             return false;
         }
 
-        var chara = GameObject.Find("/CharactersRoot").transform.GetChild(0).gameObject;
+        var root = GameObject.Find("/CharactersRoot");
+        var chara = root.transform.GetChild(0).gameObject;
         CharaData = chara.GetComponent<CharaData>();
         RuntimeAnimatorController = chara.GetComponent<Animator>().runtimeAnimatorController;
 
@@ -103,7 +140,7 @@ public class VrmLoaderModule : IModule
         Logger.Debug("Old character has been destroyed.");
         Object.Destroy(chara);
 
-        newChara.transform.parent = GameObject.Find("/CharactersRoot").transform;
+        newChara.transform.parent = root.transform;
 
         CharaData newCharaData = newChara.AddComponent<CharaData>();
         CopyCharaData(CharaData, newCharaData);
