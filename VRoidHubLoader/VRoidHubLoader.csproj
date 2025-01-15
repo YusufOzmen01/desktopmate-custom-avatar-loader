@@ -425,6 +425,7 @@
 		<Compile Include="Logging\PlayerLogManager.cs" />
 		<Compile Include="Modules\IModule.cs" />
 		<Compile Include="Modules\VrmLoaderModule.cs" />
+		<Compile Include="Patches\ModelPageManagerPatch.cs" />
 		<Compile Include="Settings\ISettingsProvider.cs" />
 		<Compile Include="Settings\MelonLoaderSettings.cs" />
 		<Compile Include="Versioning\GitHubTag.cs" />
