@@ -1,4 +1,4 @@
-# Mod Desktop Mate Pour Charger De Personnage 
+# Mod Desktop Mate Pour Changer De Personnage 
 
 <div align="center">
 Vous pouvez soutenir mon travail et moi via Buy Me a Coffee!<br>
