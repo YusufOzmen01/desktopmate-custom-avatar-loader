@@ -1,4 +1,4 @@
-# Custom Avatar Loader Mod for Desktop Mate
+# Mod Desktop Mate Pour Charger De Personnage 
 
 <div align="center">
 Vous pouvez soutenir mon travail et moi via Buy Me a Coffee!<br>
