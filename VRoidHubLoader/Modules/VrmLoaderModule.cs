@@ -17,11 +17,14 @@ using MelonLoader.Utils;
 using BepInEx.Unity.IL2CPP.Utils;
 #endif
 
+using AssetBundleLoader = Helpers.AssetBundleLoader;
+
 public class VrmLoaderModule : MonoBehaviour
 {
     private bool init;
 
-    private VrmLoader VrmLoader;
+    private VrmLoader? VrmLoader;
+    private AssetBundleLoader? AssetBundleLoader;
 
     [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     private static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
@@ -42,6 +45,7 @@ public class VrmLoaderModule : MonoBehaviour
         }
 
         VrmLoader = new VrmLoader();
+        AssetBundleLoader = new AssetBundleLoader();
     }
 
     private void Update()
@@ -100,11 +104,19 @@ public class VrmLoaderModule : MonoBehaviour
 
         Core.Msg("Character attributes have been copied!");
 
-        GameObject? newChara = VrmLoader.LoadVrmIntoScene(path);
+        GameObject? newChara;
+        AssetBundle.UnloadAllAssetBundles(false);
+        if (path.EndsWith(".vrm")) newChara = VrmLoader!.LoadVrmIntoScene(path);
+        else if (path.EndsWith(".dmma")) newChara = AssetBundleLoader!.LoadAssetBundleIntoScene(path);
+        else
+        {
+            Core.Error("Unkown file extension of selected model file: " + path);
+            return false;
+        }
         if (newChara == null)
         {
-            Core.Error("[Chara Loader] Failed to load VRM file: " + path);
-            Task.Run(() => { MessageBox(new IntPtr(0), "Failed to load VRM file! Make sure the VRM file is compatible!", "Error", 0x00000010 /* MB_ICONERROR */); });
+            Core.Error("[Chara Loader] Failed to load model from file: " + path);
+            Task.Run(() => { MessageBox(new IntPtr(0), "Failed to load model from file! Make sure the file is VRM or DMMA compatible!", "Error", 0x00000010 /* MB_ICONERROR */); });
 
             return false;
         }

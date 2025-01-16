@@ -13,7 +13,7 @@ namespace CustomAvatarLoader.Patches
         private static void Postfix(ModelPageManager __instance)
         {
             float offset = 0.32f;
-            foreach (string path in Directory.GetFiles(Core.MainModule.VrmFolderPath).Where(f => f.EndsWith(".vrm")))
+            foreach (string path in Directory.GetFiles(Core.MainModule.VrmFolderPath).Where(f => f.EndsWith(".vrm") | f.EndsWith(".dmma")))
             {
                 string file = Path.GetFileName(path);
                 string name = file.Split('.')[0];

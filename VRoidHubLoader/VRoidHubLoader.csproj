@@ -63,6 +63,9 @@
     <Reference Include="UnityEngine">
       <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
@@ -129,6 +132,9 @@
     <Reference Include="UnityEngine">
       <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
@@ -186,6 +192,7 @@
 		<Compile Include="Helpers\FileHelper.cs" />
 		<Compile Include="Helpers\Updater.cs" />
 		<Compile Include="Helpers\VrmLoader.cs" />
+		<Compile Include="Helpers\AssetBundleLoader.cs" />
 		<Compile Include="Helpers\WindowHelper.cs" />
 		<Compile Include="Logging\ILogger.cs" />
 		<Compile Include="Logging\PlayerLogManager.cs" />
