@@ -1,9 +1,8 @@
 # Custom Avatar Loader Mod for Desktop Mate
-## [Русский](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_RU.md) / [日本語](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_JP.md) / [简体中文](https://github.com/yuhan2680/desktopmate-custom-avatar-loader/blob/main/README_ZH.md) / [Türkçe](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_TR.md) / [Vietnamese](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/blob/main/README_VN.md)
 
 <div align="center">
 Vous pouvez soutenir mon travail et moi via Buy Me a Coffee!<br>
-Also, don't forget to join the Discord Server!<br>
+Et n'oubliez pas de rejoindre le serveur Discord!<br>
 <a href="https://buymeacoffee.com/sergiomarquina">
 <img src="https://i.imgur.com/l7NBjqk.png" alt="drawing" width="150" height="45" align="center">
 </a>
@@ -12,26 +11,26 @@ Also, don't forget to join the Discord Server!<br>
 </a>
   <br><br>
 </div>
-This mod lets you use any .VRM file model you want inside of Desktop Mate!
+Ce mod permet de changer le personnage en un autre avec n'importe quel fichier .VRM!
 
 ## Installation
-- Install the latest [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) version to DesktopMate (v0.6.6 is the recommended one)
-- Install .NET Runtime 6.0 from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)
-- Download [Custom Avatar Loader.zip](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/releases/latest/download/CustomAvatarLoader.zip) from here or Releases section on the right
-- Extract the contents **in the Desktop Mate folder**
+- Installez la version de [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) la plus récente sur DesktopMate (v0.6.6 reccomandée)
+- Installez .NET Runtime 6.0 via [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)
+- Téléchargez [Custom Avatar Loader.zip](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/releases/latest/download/CustomAvatarLoader.zip) ici ou via la section "Releases" sur la droite
+- Extraire le contenu **dans le dossier Desktop Mate**
 
 ## Usage
-- Initial startup of Desktop Mate will take a while as IL2CPP needs to decompile the game binary
-- After that, click on your character and press F4
-- A file dialog will open. Choose any VRM file that you want (make sure it's in a folder that you have permission)
-- And your model should immediately appear!
+- Le démmarage initial mettra un moment le temps que IL2CPP décompile Desktop Mate
+- Après cela, il suffit de cliquer sur le personnage et d'appuyer sur F4
+- L'Explorateur de ficher va s'ouvrir. Sélectionez un fichier .VRM (dans un dossier que le programme peux accéder)
+- Le Modèle devrais apparaite!
 
-### You can also access a video tutorial from [here](https://youtu.be/CqjfT6QzRLM)
+### Vous pouvez aussi regarder ce [Tutoriel](https://youtu.be/CqjfT6QzRLM) (vidéo en Anglais)
 
-## Notes for Development
-- Make sure you have .NET Runtime 6.0 and .NET Desktop Support installed for Visual Studio
-- Install [MelonLoader's VSIX](https://github.com/TrevTV/MelonLoader.VSWizard/releases) for developing mods
-- Also, you might need to install Desktop Mate into C drive as it might behave a bit unexpected
+## Notes pour les Développeurs
+- Assurez-vous d'avoir .NET Runtime 6.0 et .NET Desktop Support installé pour Visual Studio
+- Installez [MelonLoader's VSIX](https://github.com/TrevTV/MelonLoader.VSWizard/releases) pour le développement de mods
+- Il se peut que Desktop Mate agit bizzarement si il n'est pas installé sur le Disque C
 
 # License
-Check the [LICENSE.md](LICENSE.md) file for details
+Voir le fichier [LICENSE.md](LICENSE.md) Pour plus de détails
