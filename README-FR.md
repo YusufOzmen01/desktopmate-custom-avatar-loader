@@ -14,7 +14,7 @@ Et n'oubliez pas de rejoindre le serveur Discord!<br>
 Ce mod permet de changer le personnage en un autre avec n'importe quel fichier .VRM!
 
 ## Installation
-- Installez la version de [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) la plus récente sur DesktopMate (v0.6.6 reccomandée)
+- Installez la version de [MelonLoader](https://github.com/LavaGang/MelonLoader/releases/download/v0.6.6/MelonLoader.Installer.exe) la plus récente sur DesktopMate (v0.6.6 recommandée)
 - Installez .NET Runtime 6.0 via [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)
 - Téléchargez [Custom Avatar Loader.zip](https://github.com/YusufOzmen01/desktopmate-custom-avatar-loader/releases/latest/download/CustomAvatarLoader.zip) ici ou via la section "Releases" sur la droite
 - Extraire le contenu **dans le dossier Desktop Mate**
@@ -22,15 +22,15 @@ Ce mod permet de changer le personnage en un autre avec n'importe quel fichier .
 ## Usage
 - Le démarrage initial mettra un moment le temps que IL2CPP décompile Desktop Mate
 - Après cela, il suffit de cliquer sur le personnage et d'appuyer sur F4
-- L'Explorateur de ficher va s'ouvrir. Sélectionez un fichier .VRM (dans un dossier que le programme peux accéder)
-- Le personnage devrais apparaite!
+- L'Explorateur de fichers va s'ouvrir. Sélectionnez un fichier .VRM (dans un dossier auquel le programme peut accéder)
+- Le personnage devrait apparaîte!
 
 ### Vous pouvez aussi regarder ce [Tutoriel](https://youtu.be/CqjfT6QzRLM) (vidéo en Anglais)
 
 ## Notes pour les Développeurs
 - Assurez-vous d'avoir .NET Runtime 6.0 et .NET Desktop Support installé pour Visual Studio
 - Installez [MelonLoader's VSIX](https://github.com/TrevTV/MelonLoader.VSWizard/releases) pour le développement de mods
-- Il se peut que Desktop Mate agit bizzarement si il n'est pas installé sur le Disque C
+- Il se peut que Desktop Mate agisse bizarrement s'il n'est pas installé sur le Disque C
 
 # License
 Voir le fichier [LICENSE.md](LICENSE.md) Pour plus de détails
