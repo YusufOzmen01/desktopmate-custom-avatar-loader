@@ -20,10 +20,10 @@ Ce mod permet de changer le personnage en un autre avec n'importe quel fichier .
 - Extraire le contenu **dans le dossier Desktop Mate**
 
 ## Usage
-- Le démmarage initial mettra un moment le temps que IL2CPP décompile Desktop Mate
+- Le démarrage initial mettra un moment le temps que IL2CPP décompile Desktop Mate
 - Après cela, il suffit de cliquer sur le personnage et d'appuyer sur F4
 - L'Explorateur de ficher va s'ouvrir. Sélectionez un fichier .VRM (dans un dossier que le programme peux accéder)
-- Le Modèle devrais apparaite!
+- Le personnage devrais apparaite!
 
 ### Vous pouvez aussi regarder ce [Tutoriel](https://youtu.be/CqjfT6QzRLM) (vidéo en Anglais)
 
