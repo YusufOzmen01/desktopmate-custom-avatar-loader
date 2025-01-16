@@ -2,15 +2,19 @@
 
 namespace CustomAvatarLoader;
 
+using BepInEx.Configuration;
+using BepInEx.Logging;
 using CustomAvatarLoader.Helpers;
 using CustomAvatarLoader.Modules;
 using Logging;
 using MelonLoader;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using UnityEngine;
 using Versioning;
+using ILogger = Logging.ILogger;
 
-public class Core : MelonMod
+public class Core : MonoBehaviour
 {
     protected const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
 
@@ -22,12 +26,40 @@ public class Core : MelonMod
 
     protected virtual IEnumerable<IModule> Modules { get; private set; }
 
-    public override void OnInitializeMelon()
+    public void InitMelonLoader(MelonLogger.Instance loggerInstance)
     {
         var services = new ServiceCollection();
-        ConfigureServices(services);
+        ConfigureServices(services, loggerInstance);
         ServiceProvider = services.BuildServiceProvider();
+        Init();
+    }
 
+    public void InitBepInEx(ManualLogSource loggerInstance, ConfigFile config)
+    {
+        var services = new ServiceCollection();
+        ConfigureServices(services, loggerInstance, config);
+        ServiceProvider = services.BuildServiceProvider();
+        Init();
+    }
+
+    protected virtual void ConfigureServices(IServiceCollection services, MelonLogger.Instance loggerInstance)
+    {
+        services.AddSingleton(typeof(MelonLogger.Instance), loggerInstance);
+        services.AddSingleton(typeof(ISettingsProvider), new MelonLoaderSettings("settings"));
+        services.AddScoped(typeof(ILogger), typeof(MelonLoaderLogger));
+        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
+    }
+
+    protected virtual void ConfigureServices(IServiceCollection services, ManualLogSource loggerInstance, ConfigFile config)
+    {
+        services.AddSingleton(typeof(ManualLogSource), loggerInstance);
+        services.AddSingleton(typeof(ISettingsProvider), new BepInExSettings("settings", config));
+        services.AddScoped(typeof(ILogger), typeof(BepInExLogger));
+        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
+    }
+
+    private void Init()
+    {
         Modules = ServiceProvider.GetServices<IModule>();
         Logger = ServiceProvider.GetService<ILogger>();
         SettingsProvider = ServiceProvider.GetService<ISettingsProvider>();
@@ -72,15 +104,7 @@ public class Core : MelonMod
         }
     }
 
-    protected virtual void ConfigureServices(IServiceCollection services)
-    {
-        services.AddSingleton(typeof(MelonLogger.Instance), LoggerInstance);
-        services.AddSingleton(typeof(ISettingsProvider), new MelonLoaderSettings("settings"));
-        services.AddScoped(typeof(ILogger), typeof(MelonLoaderLogger));
-        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
-    }
-
-    public override void OnUpdate()
+    private void Update()
     {
         foreach (var service in Modules)
         {
