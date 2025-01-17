@@ -17,8 +17,8 @@ namespace CustomAvatarLoader.Patches
         protected static VrmLoaderModule LoaderModule { get; private set; }
         private static FileSystemWatcher vrmWatcher;
         private static ModelPageManager instance;
-        private static System.Timers.Timer debounceTimer;
-
+        private static object? debounceCoroutine;
+        
         public static void InitPatch(Logging.ILogger logger, ISettingsProvider provider, VrmLoaderModule module)
         {
             SettingsProvider = provider;
@@ -36,21 +36,27 @@ namespace CustomAvatarLoader.Patches
             vrmWatcher.Created += OnVrmFolderChanged;
             vrmWatcher.Deleted += OnVrmFolderChanged;
             vrmWatcher.EnableRaisingEvents = true;
-            
-            debounceTimer = new System.Timers.Timer(3000);
-            debounceTimer.AutoReset = false;
-            debounceTimer.Elapsed += (_, __) => RebuildButtons();
         }
 
         private static void OnVrmFolderChanged(object sender, FileSystemEventArgs e)
         {
             Logger.Debug($"VRM file change detected: {e.ChangeType} - {e.FullPath}");
-            
-            if (debounceTimer.Enabled)
+    
+            if (debounceCoroutine != null)
             {
-                debounceTimer.Stop();
+                MelonCoroutines.Stop(debounceCoroutine);
             }
-            debounceTimer.Start();
+
+            debounceCoroutine = MelonCoroutines.Start(DebounceCoroutine());
+        }
+        
+        private static IEnumerator DebounceCoroutine()
+        {
+            yield return new WaitForSeconds(3f);
+
+            RebuildButtons();
+
+            debounceCoroutine = null;
         }
         
         private static void Postfix(ModelPageManager __instance)
