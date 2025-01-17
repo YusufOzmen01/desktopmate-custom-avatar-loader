@@ -4,6 +4,7 @@ using CustomAvatarLoader.Settings;
 namespace CustomAvatarLoader.Modules;
 
 using CustomAvatarLoader.Helpers;
+using CustomAvatarLoader.Messaging;
 using CustomAvatarLoader.Patches;
 using Il2Cpp;
 using MelonLoader;
@@ -17,16 +18,19 @@ public class VrmLoaderModule : IModule
 {
     private bool init;
 
-    public VrmLoaderModule(ILogger logger, ISettingsProvider settingsProvider)
+    public VrmLoaderModule(ILogger logger, ISettingsProvider settingsProvider, IMessageProvider messageProvider)
     {
         Logger = logger;
         SettingsProvider = settingsProvider;
+        MessageProvider = messageProvider;
         VrmLoader = new VrmLoader(Logger);
     }
 
     protected virtual ILogger Logger { get; }
     
     protected virtual ISettingsProvider SettingsProvider { get; }
+
+    protected virtual IMessageProvider MessageProvider { get; }
 
     protected virtual VrmLoader VrmLoader { get; }
 

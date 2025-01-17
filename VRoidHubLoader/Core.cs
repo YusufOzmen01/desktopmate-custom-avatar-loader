@@ -3,6 +3,7 @@
 namespace CustomAvatarLoader;
 
 using CustomAvatarLoader.Helpers;
+using CustomAvatarLoader.Messaging;
 using CustomAvatarLoader.Modules;
 using Logging;
 using MelonLoader;
@@ -20,6 +21,8 @@ public class Core : MelonMod
 
     protected virtual IServiceProvider ServiceProvider { get; private set; }
 
+    protected virtual IMessageProvider MessageProvider { get; private set; }
+
     protected virtual IEnumerable<IModule> Modules { get; private set; }
 
     public override void OnInitializeMelon()
@@ -31,6 +34,7 @@ public class Core : MelonMod
         Modules = ServiceProvider.GetServices<IModule>();
         Logger = ServiceProvider.GetService<ILogger>();
         SettingsProvider = ServiceProvider.GetService<ISettingsProvider>();
+        MessageProvider = ServiceProvider.GetService<IMessageProvider>();
 
         var versionChecker = new GitHubVersionChecker(RepositoryName, Logger);
         var updater = new Updater(RepositoryName, Logger);
@@ -76,6 +80,7 @@ public class Core : MelonMod
     {
         services.AddSingleton(typeof(MelonLogger.Instance), LoggerInstance);
         services.AddSingleton(typeof(ISettingsProvider), new MelonLoaderSettings("settings"));
+        services.AddSingleton(typeof(IMessageProvider), new MelonLoaderMessenger());
         services.AddScoped(typeof(ILogger), typeof(MelonLoaderLogger));
         services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
     }
@@ -86,5 +91,10 @@ public class Core : MelonMod
         {
             service.OnUpdate();
         }
+    }
+
+    public override void OnGUI()
+    {
+        MessageProvider.OnGUI();
     }
 }
