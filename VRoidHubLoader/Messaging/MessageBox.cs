@@ -37,7 +37,7 @@ namespace CustomAvatarLoader.Messaging
                 GUI.skin.label.alignment = TextAnchor.MiddleCenter;
                 GUI.skin.button.alignment = TextAnchor.MiddleCenter;
                 Size = GUI.skin.label.CalcSize(new GUIContent(Message));
-                Window = new Rect(500, 500, Size.x + 120, Size.y + 90);
+                Window = new Rect(1100, 700, Size.x + 120, Size.y + 90);
                 Initialized = true;
             }
         }

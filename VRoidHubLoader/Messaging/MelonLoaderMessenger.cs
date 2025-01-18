@@ -20,6 +20,7 @@ public class MelonLoaderMessenger : IMessageProvider
             if (!box.Initialized)
                 box.Init();
             box.Draw(i);
+            MenuManager.Instance._IsOpen_k__BackingField = true;
         }
     }
 
@@ -40,6 +41,13 @@ public class MelonLoaderMessenger : IMessageProvider
         if (sender is MessageBox boxSender)
         {
             OpenMessageBoxes.Remove(boxSender);
+            if (OpenMessageBoxes.Count == 0)
+            {
+                // this can cause a desync (i.e. the menu being open when this is set to false)
+                // from testing this doesn't cause any issues
+                // but if a better way of doing this would be preferred
+                MenuManager.Instance._IsOpen_k__BackingField = false;
+            }
         }
     }
 
