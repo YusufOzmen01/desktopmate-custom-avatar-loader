@@ -18,7 +18,6 @@ public static class Core
 
     public static ISettingsProvider Settings { get; private set; }
     public static VrmLoaderModule MainModule { get; private set; }
-    public static GameObject MainModuleObject { get; private set; }
 
     public static void Init(ILogger logger, ISettingsProvider settings)
     {
@@ -63,9 +62,9 @@ public static class Core
         playerLogManager.ClearLog(playerPrevLog);
 
         ClassInjector.RegisterTypeInIl2Cpp<VrmLoaderModule>();
-        MainModuleObject = new("CustomAvatarLoader");
-        Object.DontDestroyOnLoad(MainModuleObject);
-        MainModule = MainModuleObject.AddComponent<VrmLoaderModule>();
+        GameObject obj = new("CustomAvatarLoader");
+        Object.DontDestroyOnLoad(obj);
+        MainModule = obj.AddComponent<VrmLoaderModule>();
     }
 
     public static void Msg(string message)
