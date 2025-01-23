@@ -1,0 +1,20 @@
+.error-icon {
+    background-image: url("/Assets/DMMAExporter/Editor/icons/png/error.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.warning-icon {
+    background-image: url("/Assets/DMMAExporter/Editor/icons/png/warning.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.info-icon {
+    background-image: url("/Assets/DMMAExporter/Editor/icons/png/info.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+.success-icon {
+    background-image: url("/Assets/DMMAExporter/Editor/icons/png/success.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.unity-list-view__empty-label {
+    display: none;
+}
