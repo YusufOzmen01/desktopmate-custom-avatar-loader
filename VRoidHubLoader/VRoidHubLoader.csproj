@@ -11,7 +11,7 @@
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<GamePath Condition=" '$(GamePath)' == '' ">F:\SteamLibrary\steamapps\common\Desktop Mate</GamePath>
+		<GamePath Condition=" '$(GamePath)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Desktop Mate</GamePath>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configurations>BepInEx;MelonLoader</Configurations>
 	</PropertyGroup>
@@ -198,10 +198,5 @@
 		<Compile Include="Settings\MelonLoaderSettings.cs" />
 		<Compile Include="Versioning\GitHubTag.cs" />
 		<Compile Include="Versioning\GitHubVersionChecker.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.2" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 </Project>
