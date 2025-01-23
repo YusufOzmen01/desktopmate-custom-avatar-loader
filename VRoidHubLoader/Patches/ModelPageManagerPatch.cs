@@ -1,31 +1,19 @@
-﻿using CustomAvatarLoader.Settings;
-using HarmonyLib;
-using Il2Cpp;
-using MelonLoader;
+﻿using HarmonyLib;
 using UnityEngine.UI;
 using UnityEngine;
-using CustomAvatarLoader.Modules;
+#if MELON
+using Il2Cpp;
+#endif
 
 namespace CustomAvatarLoader.Patches
 {
     [HarmonyPatch(typeof(ModelPageManager), "Start")]
     internal class ModelPageManagerPatch
     {
-        protected static ISettingsProvider SettingsProvider { get; private set; }
-        protected static Logging.ILogger Logger { get; private set; }
-        protected static VrmLoaderModule LoaderModule { get; private set; }
-
-        public static void InitPatch(Logging.ILogger logger, ISettingsProvider provider, VrmLoaderModule module)
-        {
-            SettingsProvider = provider;
-            Logger = logger;
-            LoaderModule = module;
-        }
-
         private static void Postfix(ModelPageManager __instance)
         {
             float offset = 0.32f;
-            foreach (string path in Directory.GetFiles(LoaderModule.VrmFolderPath).Where(f => f.EndsWith(".vrm")))
+            foreach (string path in Directory.GetFiles(Core.MainModule.VrmFolderPath).Where(f => f.EndsWith(".vrm")))
             {
                 string file = Path.GetFileName(path);
                 string name = file.Split('.')[0];
@@ -36,19 +24,19 @@ namespace CustomAvatarLoader.Patches
                 button.GetComponentInChildren<Text>().text = name;
                 button.GetComponent<Button>().onClick.AddListener(new Action(() =>
                 {
-                    if (LoaderModule.LoadCharacter(path))
+                    if (Core.MainModule.LoadCharacter(path))
                     {
-                        SettingsProvider.Set("vrmPath", path);
-                        MelonPreferences.Save();
+                        Core.Settings.Set("vrmPath", path);
+                        Core.Settings.SaveSettings();
 
-                        Logger.Debug("OnUpdate: VrmLoaderModule file chosen");
+                        Core.Msg("OnUpdate: VrmLoaderModule file chosen");
                     }
                 }));
                 button.transform.SetParent(__instance.mikuButton.transform.parent.transform, false);
-                Logger.Info("Loaded VRM " + file);
+                Core.Msg("Loaded VRM " + file);
                 offset -= 0.32f;
             }
-            Logger.Debug("[Chara Loader] Custom menu buttons generated");
+            Core.Msg("[Chara Loader] Custom menu buttons generated");
         }
     }
 }

@@ -6,76 +6,173 @@
 		<RootNamespace>CustomAvatarLoader</RootNamespace>
 		<LangVersion>default</LangVersion>
 		<IsPackable>false</IsPackable>
-		<AssemblyVersion>1.0.4</AssemblyVersion>
-		<FileVersion>1.0.4</FileVersion>
+		<AssemblyVersion>1.0.5</AssemblyVersion>
+		<FileVersion>1.0.5</FileVersion>
 		<NeutralLanguage>en-US</NeutralLanguage>
-		<AssemblyName>CustomAvatarLoader</AssemblyName>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<GamePath Condition=" '$(GamePath)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Desktop Mate</GamePath>
+		<GamePath Condition=" '$(GamePath)' == '' ">F:\SteamLibrary\steamapps\common\Desktop Mate</GamePath>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Configurations>BepInEx;MelonLoader</Configurations>
 	</PropertyGroup>
 
-  <ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='MelonLoader'">
+    <DefineConstants>MELON</DefineConstants>
+    <AssemblyName>CustomAvatarLoader.MelonLoader</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='BepInEx'">
+    <DefineConstants>BEPINEX</DefineConstants>
+    <AssemblyName>CustomAvatarLoader.BepInEx</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='MelonLoader'">
     <Reference Include="0Harmony">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\net6\0Harmony.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\net6\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Core">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\UserLibs\BepInEx.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Unity.IL2CPP">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\UserLibs\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Common">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Il2Cppmscorlib">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppUniGLTF">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Il2CppUniGLTF.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Il2CppUniGLTF.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppVRM10">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Il2CppVRM10.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Il2CppVRM10.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppVrmLib">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Il2CppVrmLib.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Il2CppVrmLib.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppVRMShaders.GLTF.IO.Runtime">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Il2CppVRMShaders.GLTF.IO.Runtime.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Il2CppVRMShaders.GLTF.IO.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="MelonLoader">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\net6\MelonLoader.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\net6\MelonLoader.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Animation.Runtime">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.AnimationModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>F:\SteamLibrary\steamapps\common\Desktop Mate\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
+      <HintPath>$(GamePath)\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='BepInEx'">
+    <Reference Include="0Harmony">
+      <HintPath>$(GamePath)\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(GamePath)\BepInEx\interop\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(GamePath)\BepInEx\core\BepInEx.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Preloader.Core">
+      <HintPath>$(GamePath)\BepInEx\core\BepInEx.Preloader.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Unity.Common">
+      <HintPath>$(GamePath)\BepInEx\core\BepInEx.Unity.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>$(GamePath)\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
+    </Reference>
+    <Reference Include="FastSpringBone10">
+      <HintPath>$(GamePath)\BepInEx\interop\FastSpringBone10.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Common">
+      <HintPath>$(GamePath)\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(GamePath)\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(GamePath)\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="UniGLTF">
+      <HintPath>$(GamePath)\BepInEx\interop\UniGLTF.dll</HintPath>
+    </Reference>
+    <Reference Include="UniGLTF.Utils">
+      <HintPath>$(GamePath)\BepInEx\interop\UniGLTF.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="UniHumanoid">
+      <HintPath>$(GamePath)\BepInEx\interop\UniHumanoid.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Animation.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\Unity.2D.Animation.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(GamePath)\BepInEx\interop\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="VRM10">
+      <HintPath>$(GamePath)\BepInEx\interop\VRM10.dll</HintPath>
+    </Reference>
+    <Reference Include="VrmLib">
+      <HintPath>$(GamePath)\BepInEx\interop\VrmLib.dll</HintPath>
+    </Reference>
+    <Reference Include="VRMShaders.GLTF.IO.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\VRMShaders.GLTF.IO.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="VRMShaders.GLTF.UniUnlit.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\VRMShaders.GLTF.UniUnlit.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="VRMShaders.VRM.IO.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\VRMShaders.VRM.IO.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="VRMShaders.VRM10.Format.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\VRMShaders.VRM10.Format.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="VRMShaders.VRM10.MToon10.Runtime">
+      <HintPath>$(GamePath)\BepInEx\interop\VRMShaders.VRM10.MToon10.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="VRoidSDK">
+      <HintPath>$(GamePath)\BepInEx\interop\VRoidSDK.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -85,19 +182,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Compile Include="AssemblyInfo.cs" />
 		<Compile Include="Core.cs" />
 		<Compile Include="Helpers\FileHelper.cs" />
 		<Compile Include="Helpers\Updater.cs" />
 		<Compile Include="Helpers\VrmLoader.cs" />
 		<Compile Include="Helpers\WindowHelper.cs" />
-		<Compile Include="Helpers\AsyncHelper.cs" />
-		<Compile Include="Logging\BepInExLogger.cs" />
 		<Compile Include="Logging\ILogger.cs" />
-		<Compile Include="Logging\MelonLoaderLogger.cs" />
 		<Compile Include="Logging\PlayerLogManager.cs" />
-		<Compile Include="Modules\IModule.cs" />
 		<Compile Include="Modules\VrmLoaderModule.cs" />
+		<Compile Include="Patches\MainManagerPatch.cs" />
 		<Compile Include="Patches\ModelPageManagerPatch.cs" />
 		<Compile Include="Plugin.cs" />
 		<Compile Include="Settings\BepInExSettings.cs" />

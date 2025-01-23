@@ -1,16 +1,16 @@
-﻿using BepInEx.Configuration;
+﻿#if BEPINEX
+using BepInEx.Configuration;
 
 namespace CustomAvatarLoader.Settings;
 
 public class BepInExSettings : ISettingsProvider 
 {
     private readonly string _defaultCategory;
-    private readonly ConfigFile Config;
+    private ConfigFile Config => BepInExPlugin.Instance.Config;
 
-    public BepInExSettings(string defaultCategory, ConfigFile config)
+    public BepInExSettings(string defaultCategory)
     {
         _defaultCategory = defaultCategory;
-        Config = config;
     }
 
     public T Get<T>(string setting, T defaultValue)
@@ -42,12 +42,13 @@ public class BepInExSettings : ISettingsProvider
             return true;
         }
 
-        Config.Bind(_defaultCategory, setting, value);
         return true;
     }
 
     public void SaveSettings()
     {
+        Core.Msg("Preferences saved!");
         Config.Save();
     }
 }
+#endif

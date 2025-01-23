@@ -1,30 +1,58 @@
-﻿using BepInEx;
-using BepInEx.Unity.IL2CPP;
-using Il2CppInterop.Runtime.Injection;
+﻿using CustomAvatarLoader;
+using CustomAvatarLoader.Settings;
+
+
+#if MELON
 using MelonLoader;
-using UnityEngine;
+[assembly: MelonInfo(typeof(MelonLoaderPlugin), "Custom Avatar Loader Mod", "1.0.5", "SergioMarquina, Misandrie, CrasH, alltoasters")]
+[assembly: MelonGame("infiniteloop", "DesktopMate")]
+#endif
+#if BEPINEX
+using BepInEx;
+using BepInEx.Unity.IL2CPP;
+using HarmonyLib;
+#endif
 
 namespace CustomAvatarLoader;
 
-public class MelonLoaderPlugin : MelonMod
+#if MELON
+public class MelonLoaderPlugin : MelonMod, Logging.ILogger
 {
-    public override void OnInitializeMelon()
+    public Action<object> LogMessage => LoggerInstance.Msg;
+
+    public Action<object> LogWarning => LoggerInstance.Warning;
+
+    public Action<object> LogError => LoggerInstance.Error;
+
+    public override void OnLateInitializeMelon()
     {
         LoggerInstance.Warning("Loading using MelonLoader!");
-
-        ClassInjector.RegisterTypeInIl2Cpp<Core>();
-        GameObject hook = new();
-        hook.AddComponent<Core>().InitMelonLoader(LoggerInstance);
+        Core.Init(this, new MelonLoaderSettings("settings"));
     }
 }
+#endif
 
-[BepInPlugin("Custom Avatar Loader Mod", "Custom Avatar Loader Mod", "1.0.5")]
-public class BepInExPlugin : BasePlugin
+#if BEPINEX
+[BepInPlugin("CustomAvatarLoaderMod", "Custom Avatar Loader Mod", "1.0.5")]
+public class BepInExPlugin : BasePlugin, Logging.ILogger
 {
+    public static BepInExPlugin Instance;
+
+    public Harmony Harmony;
+
+    public Action<object> LogMessage => Log.LogMessage;
+
+    public Action<object> LogWarning => Log.LogWarning;
+
+    public Action<object> LogError => Log.LogError;
+
     public override void Load()
     {
         Log.LogWarning("Loading using BepInEx!");
-       
-        AddComponent<Core>().InitBepInEx(Log, Config);
+        Instance = this;
+        Harmony = new Harmony("CustomAvatarLoaderMod");
+        Harmony.PatchAll();
+        Core.Init(this, new BepInExSettings("settings"));
     }
 }
+#endif

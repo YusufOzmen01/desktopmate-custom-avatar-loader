@@ -1,77 +1,41 @@
-﻿using CustomAvatarLoader.Settings;
+﻿namespace CustomAvatarLoader;
 
-namespace CustomAvatarLoader;
-
-using BepInEx.Configuration;
-using BepInEx.Logging;
 using CustomAvatarLoader.Helpers;
-using CustomAvatarLoader.Modules;
+using CustomAvatarLoader.Settings;
 using Logging;
-using MelonLoader;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using UnityEngine;
 using Versioning;
 using ILogger = Logging.ILogger;
+using CustomAvatarLoader.Modules;
+using Il2CppInterop.Runtime.Injection;
+using UnityEngine;
 
-public class Core : MonoBehaviour
+public static class Core
 {
-    protected const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
+    private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
 
-    protected virtual ILogger Logger { get; private set; }
+    private static ILogger Logger;
 
-    protected virtual ISettingsProvider SettingsProvider { get; private set; }
+    public static ISettingsProvider Settings { get; private set; }
+    public static VrmLoaderModule MainModule { get; private set; }
+    public static GameObject MainModuleObject { get; private set; }
 
-    protected virtual IServiceProvider ServiceProvider { get; private set; }
-
-    protected virtual IEnumerable<IModule> Modules { get; private set; }
-
-    public void InitMelonLoader(MelonLogger.Instance loggerInstance)
+    public static void Init(ILogger logger, ISettingsProvider settings)
     {
-        var services = new ServiceCollection();
-        ConfigureServices(services, loggerInstance);
-        ServiceProvider = services.BuildServiceProvider();
-        Init();
+        Logger = logger;
+        Settings = settings;
     }
 
-    public void InitBepInEx(ManualLogSource loggerInstance, ConfigFile config)
+    public static void Start()
     {
-        var services = new ServiceCollection();
-        ConfigureServices(services, loggerInstance, config);
-        ServiceProvider = services.BuildServiceProvider();
-        Init();
-    }
-
-    protected virtual void ConfigureServices(IServiceCollection services, MelonLogger.Instance loggerInstance)
-    {
-        services.AddSingleton(typeof(MelonLogger.Instance), loggerInstance);
-        services.AddSingleton(typeof(ISettingsProvider), new MelonLoaderSettings("settings"));
-        services.AddScoped(typeof(ILogger), typeof(MelonLoaderLogger));
-        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
-    }
-
-    protected virtual void ConfigureServices(IServiceCollection services, ManualLogSource loggerInstance, ConfigFile config)
-    {
-        services.AddSingleton(typeof(ManualLogSource), loggerInstance);
-        services.AddSingleton(typeof(ISettingsProvider), new BepInExSettings("settings", config));
-        services.AddScoped(typeof(ILogger), typeof(BepInExLogger));
-        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
-    }
-
-    private void Init()
-    {
-        Modules = ServiceProvider.GetServices<IModule>();
-        Logger = ServiceProvider.GetService<ILogger>();
-        SettingsProvider = ServiceProvider.GetService<ISettingsProvider>();
-
-        var versionChecker = new GitHubVersionChecker(RepositoryName, Logger);
-        var updater = new Updater(RepositoryName, Logger);
+        var versionChecker = new GitHubVersionChecker(RepositoryName);
+        var updater = new Updater(RepositoryName);
 
         var currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
 
         if (currentVersion == "0")
         {
-            Logger.Warn("CurrentVersion is 0, faulty module version?");
+            Warn("CurrentVersion is 0, faulty module version?");
         }
 
         var hasLatestVersion = versionChecker.IsLatestVersionInstalled(currentVersion);
@@ -82,12 +46,12 @@ public class Core : MonoBehaviour
         }
         else
         {
-            Logger.Info("[VersionCheck] Latest version installed");
+            Msg("[VersionCheck] Latest version installed");
         }
 
         WindowHelper.SetWindowForeground(WindowHelper.GetUnityGameHwnd());
 
-        var playerLogManager = new PlayerLogManager(SettingsProvider, Logger);
+        var playerLogManager = new PlayerLogManager(Settings);
 
         string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow",
             "infiniteloop", "DesktopMate");
@@ -97,18 +61,25 @@ public class Core : MonoBehaviour
 
         playerLogManager.ClearLog(playerLog);
         playerLogManager.ClearLog(playerPrevLog);
-        
-        foreach (var module in Modules)
-        {
-            module.OnInitialize();
-        }
+
+        ClassInjector.RegisterTypeInIl2Cpp<VrmLoaderModule>();
+        MainModuleObject = new("CustomAvatarLoader");
+        Object.DontDestroyOnLoad(MainModuleObject);
+        MainModule = MainModuleObject.AddComponent<VrmLoaderModule>();
     }
 
-    private void Update()
+    public static void Msg(string message)
     {
-        foreach (var service in Modules)
-        {
-            service.OnUpdate();
-        }
+        Logger.LogMessage(message);
+    }
+
+    public static void Warn(string message)
+    {
+        Logger.LogWarning(message);
+    }
+
+    public static void Error(string message)
+    {
+        Logger.LogError(message);
     }
 }
