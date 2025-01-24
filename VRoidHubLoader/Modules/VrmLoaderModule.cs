@@ -53,9 +53,9 @@ public class VrmLoaderModule : MonoBehaviour
                 && !string.IsNullOrEmpty(vrmPath))
             {
                 LoadCharacter(vrmPath);
+                
+                init = true;
             }
-
-            init = true;
         }
 
         if (Input.GetKeyDown(KeyCode.F4))
