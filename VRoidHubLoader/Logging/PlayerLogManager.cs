@@ -1,21 +1,15 @@
 ﻿namespace CustomAvatarLoader.Logging;
 
 using CustomAvatarLoader.Settings;
-using MelonLoader;
 
 public class PlayerLogManager
 {
-    public PlayerLogManager(
-        ISettingsProvider settingsProvider,
-        ILogger logger)
+    public PlayerLogManager(ISettingsProvider settingsProvider)
     {
         SettingsProvider = settingsProvider;
-        Logger = logger;
     }
 
     protected virtual ISettingsProvider SettingsProvider { get; }
-
-    protected virtual ILogger Logger { get; }
 
     public void ClearLog(string logPath)
     {
@@ -31,7 +25,7 @@ public class PlayerLogManager
             }
             catch (Exception ex)
             {
-                Logger.Warn($"Failed to clear log file at {logPath}", ex);
+                Core.Warn($"Failed to clear log file at {logPath}\n" + ex);
             }
 
             File.SetAttributes(logPath, disableReadOnly ? FileAttributes.Normal : FileAttributes.ReadOnly);

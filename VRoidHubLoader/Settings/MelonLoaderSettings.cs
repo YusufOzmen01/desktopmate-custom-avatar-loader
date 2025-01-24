@@ -1,4 +1,5 @@
-﻿using MelonLoader;
+﻿#if MELON
+using MelonLoader;
 
 namespace CustomAvatarLoader.Settings;
 
@@ -50,3 +51,4 @@ public class MelonLoaderSettings : ISettingsProvider
         MelonPreferences.Save();
     }
 }
+#endif
