@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using UnityEngine.UI;
 using UnityEngine;
 #if MELON
