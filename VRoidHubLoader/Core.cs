@@ -50,17 +50,6 @@ public static class Core
 
         WindowHelper.SetWindowForeground(WindowHelper.GetUnityGameHwnd());
 
-        var playerLogManager = new PlayerLogManager(Settings);
-
-        string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow",
-            "infiniteloop", "DesktopMate");
-
-        string playerLog = Path.Join(logPath, "Player.log");
-        string playerPrevLog = Path.Join(logPath, "Player-prev.log");
-
-        playerLogManager.ClearLog(playerLog);
-        playerLogManager.ClearLog(playerPrevLog);
-
         ClassInjector.RegisterTypeInIl2Cpp<VrmLoaderModule>();
         GameObject obj = new("CustomAvatarLoader");
         Object.DontDestroyOnLoad(obj);
