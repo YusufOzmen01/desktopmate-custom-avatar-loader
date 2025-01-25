@@ -1,9 +1,11 @@
-﻿using Il2Cpp;
+﻿#if MELON
+using Il2Cpp;
+#endif
 using UnityEngine;
 
 namespace CustomAvatarLoader.Messaging;
 
-public class MelonLoaderMessenger : IMessageProvider
+public class Messenger : IMessageProvider
 {
     private readonly List<MessageBox> OpenMessageBoxes = [];
 

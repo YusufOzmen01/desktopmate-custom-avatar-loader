@@ -85,6 +85,11 @@ public class VrmLoaderModule : MonoBehaviour
         MenuManager.Instance.OpenPage(MenuManager.Instance.modelPage);
     }
 
+    private void OnGUI()
+    {
+        Core.MessageProvider.OnGUI();
+    }
+
     public bool LoadCharacter(string path)
     {
         if (!File.Exists(path))

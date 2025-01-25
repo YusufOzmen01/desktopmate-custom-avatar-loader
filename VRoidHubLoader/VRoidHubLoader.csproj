@@ -190,7 +190,7 @@
 		<Compile Include="Logging\ILogger.cs" />
 		<Compile Include="Logging\PlayerLogManager.cs" />
 		<Compile Include="Messaging\IMessageProvider.cs" />
-		<Compile Include="Messaging\MelonLoaderMessenger.cs" />
+		<Compile Include="Messaging\Messenger.cs" />
 		<Compile Include="Messaging\MessageBox.cs" />
 		<Compile Include="Modules\VrmLoaderModule.cs" />
 		<Compile Include="Patches\MainManagerPatch.cs" />
