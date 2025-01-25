@@ -1,20 +1,18 @@
 ﻿namespace CustomAvatarLoader.Helpers;
 
+#if MELON
 using Il2CppUniGLTF;
 using Il2CppUniVRM10;
+#endif
+#if BEPINEX
+using UniGLTF;
+using UniVRM10;
+#endif
 using UnityEngine;
-using ILogger = Logging.ILogger;
 
 public class VrmLoader
 {
-    ILogger _logger;
-
-    public VrmLoader(ILogger logger)
-    {
-        _logger = logger;
-    }
-
-    public GameObject LoadVrmIntoScene(string path)
+    public GameObject? LoadVrmIntoScene(string path)
     {
         try
         {
@@ -22,14 +20,14 @@ public class VrmLoader
             var vrmdata = Vrm10Data.Parse(data);
             if (vrmdata == null)
             {
-                _logger.Warn("VRM data is null, assuming it's VRM 0.0 avatar. Starting migration");
+                Core.Warn("VRM data is null, assuming it's VRM 0.0 avatar. Starting migration");
                 vrmdata = MigrateVrm0to1(data);
                 if (vrmdata == null)
                 {
-                    _logger.Error("VRM migration attempt failed. The avatar file might be corrupt or incompatible.");
+                    Core.Error("VRM migration attempt failed. The avatar file might be corrupt or incompatible.");
                 }
                 
-                _logger.Debug("VRM data migration succeeded!");
+                Core.Msg("VRM data migration succeeded!");
             }
 
             var context = new Vrm10Importer(vrmdata);
@@ -43,17 +41,15 @@ public class VrmLoader
         }
         catch (Exception ex)
         {
-            _logger.Error("Error trying to load the VRM file!", ex);
+            Core.Error("Error trying to load the VRM file!\n" + ex);
             return null;
         }
     }
 
-    public Vrm10Data MigrateVrm0to1(GltfData data)
+    public Vrm10Data? MigrateVrm0to1(GltfData data)
     {
-        Vrm10Data vrmdata = null;
-        Vrm10Data.Migrate(data, out vrmdata, out _);
-        if (vrmdata == null) _logger.Error("VRM migration attempt failed. The avatar file might be corrupt or incompatible.");
-        
+        Vrm10Data.Migrate(data, out Vrm10Data vrmdata, out _);
+        if (vrmdata == null) Core.Error("VRM migration attempt failed. The avatar file might be corrupt or incompatible.");     
         return vrmdata;
     }
 }

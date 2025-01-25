@@ -1,49 +1,44 @@
-﻿using CustomAvatarLoader.Settings;
-
 namespace CustomAvatarLoader;
 
 using CustomAvatarLoader.Helpers;
 using CustomAvatarLoader.Messaging;
 using CustomAvatarLoader.Modules;
+using CustomAvatarLoader.Settings;
 using Logging;
-using MelonLoader;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using Versioning;
+using ILogger = Logging.ILogger;
+using Il2CppInterop.Runtime.Injection;
+using UnityEngine;
 
-public class Core : MelonMod
+public static class Core
 {
-    protected const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
+    private const string RepositoryName = "YusufOzmen01/desktopmate-custom-avatar-loader";
 
-    protected virtual ILogger Logger { get; private set; }
+    private static ILogger Logger;
 
-    protected virtual ISettingsProvider SettingsProvider { get; private set; }
-
-    protected virtual IServiceProvider ServiceProvider { get; private set; }
-
-    protected virtual IMessageProvider MessageProvider { get; private set; }
+    public static ISettingsProvider Settings { get; private set; }
+    public static VrmLoaderModule MainModule { get; private set; }
+    public static IMessageProvider MessageProvider { get; private set; }
 
     protected virtual IEnumerable<IModule> Modules { get; private set; }
 
-    public override void OnInitializeMelon()
+    public static void Init(ILogger logger, ISettingsProvider settings)
     {
-        var services = new ServiceCollection();
-        ConfigureServices(services);
-        ServiceProvider = services.BuildServiceProvider();
+        Logger = logger;
+        Settings = settings;
+    }
 
-        Modules = ServiceProvider.GetServices<IModule>();
-        Logger = ServiceProvider.GetService<ILogger>();
-        SettingsProvider = ServiceProvider.GetService<ISettingsProvider>();
-        MessageProvider = ServiceProvider.GetService<IMessageProvider>();
-
-        var versionChecker = new GitHubVersionChecker(RepositoryName, Logger);
-        var updater = new Updater(RepositoryName, Logger);
+    public static void Start()
+    {
+        var versionChecker = new GitHubVersionChecker(RepositoryName);
+        var updater = new Updater(RepositoryName);
 
         var currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
 
         if (currentVersion == "0")
         {
-            Logger.Warn("CurrentVersion is 0, faulty module version?");
+            Warn("CurrentVersion is 0, faulty module version?");
         }
 
         var hasLatestVersion = versionChecker.IsLatestVersionInstalled(currentVersion);
@@ -54,47 +49,29 @@ public class Core : MelonMod
         }
         else
         {
-            Logger.Info("[VersionCheck] Latest version installed");
+            Msg("[VersionCheck] Latest version installed");
         }
 
         WindowHelper.SetWindowForeground(WindowHelper.GetUnityGameHwnd());
 
-        var playerLogManager = new PlayerLogManager(SettingsProvider, Logger);
-
-        string logPath = Path.Join(Environment.GetEnvironmentVariable("USERPROFILE"), "Appdata", "LocalLow",
-            "infiniteloop", "DesktopMate");
-
-        string playerLog = Path.Join(logPath, "Player.log");
-        string playerPrevLog = Path.Join(logPath, "Player-prev.log");
-
-        playerLogManager.ClearLog(playerLog);
-        playerLogManager.ClearLog(playerPrevLog);
-        
-        foreach (var module in Modules)
-        {
-            module.OnInitialize();
-        }
+        ClassInjector.RegisterTypeInIl2Cpp<VrmLoaderModule>();
+        GameObject obj = new("CustomAvatarLoader");
+        Object.DontDestroyOnLoad(obj);
+        MainModule = obj.AddComponent<VrmLoaderModule>();
     }
 
-    protected virtual void ConfigureServices(IServiceCollection services)
+    public static void Msg(string message)
     {
-        services.AddSingleton(typeof(MelonLogger.Instance), LoggerInstance);
-        services.AddSingleton(typeof(ISettingsProvider), new MelonLoaderSettings("settings"));
-        services.AddSingleton(typeof(IMessageProvider), new MelonLoaderMessenger());
-        services.AddScoped(typeof(ILogger), typeof(MelonLoaderLogger));
-        services.AddScoped(typeof(IModule), typeof(VrmLoaderModule));
+        Logger.LogMessage(message);
     }
 
-    public override void OnUpdate()
+    public static void Warn(string message)
     {
-        foreach (var service in Modules)
-        {
-            service.OnUpdate();
-        }
+        Logger.LogWarning(message);
     }
 
-    public override void OnGUI()
+    public static void Error(string message)
     {
-        MessageProvider.OnGUI();
+        Logger.LogError(message);
     }
 }

@@ -1,20 +1,16 @@
 ﻿namespace CustomAvatarLoader.Versioning;
 
-using CustomAvatarLoader.Logging;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
 public class GitHubVersionChecker
 {
-    public GitHubVersionChecker(string repositoryName, ILogger logger)
+    public GitHubVersionChecker(string repositoryName)
     {
         RepositoryName = repositoryName;
-        Logger = logger;
     }
 
     private string RepositoryName { get; }
-
-    private ILogger Logger { get; }
 
     public bool IsLatestVersionInstalled(string currentVersion)
     {
@@ -22,9 +18,9 @@ public class GitHubVersionChecker
         {
             using HttpClient client = new();
         
-            Logger.Info($"[VersionCheck] Current version: {currentVersion}");
+            Core.Msg($"[VersionCheck] Current version: {currentVersion}");
 
-            Logger.Info($"[VersionCheck] Checking for updates...");
+            Core.Msg($"[VersionCheck] Checking for updates...");
             
             client.DefaultRequestHeaders.UserAgent.Add(
                 new ProductInfoHeaderValue("DesktopMate-Mod", currentVersion));
@@ -32,7 +28,7 @@ public class GitHubVersionChecker
             string json = client.GetStringAsync(
                 $"https://api.github.com/repos/{RepositoryName}/tags").GetAwaiter().GetResult();
             
-            List<GitHubTag> tags = JsonSerializer.Deserialize<List<GitHubTag>>(json);
+            List<GitHubTag>? tags = JsonSerializer.Deserialize<List<GitHubTag>>(json);
 
             if (tags == null || tags.Count == 0)
             {
@@ -48,7 +44,7 @@ public class GitHubVersionChecker
         }
         catch (Exception ex)
         {
-            Logger.Error("[VersionCheck] Error checking for updates", ex);
+            Core.Error("[VersionCheck] Error checking for updates: \n" + ex);
             return true;
         }
     }
@@ -64,9 +60,9 @@ public class GitHubVersionChecker
                 ? tag.Name.Substring(1)
                 : tag.Name;
 
-            if (Version.TryParse(versionStr, out Version parsed))
+            if (Version.TryParse(versionStr, out Version? parsed))
             {
-                if (parsed > highest)
+                if (parsed != null && parsed > highest)
                     highest = parsed;
             }
         }

@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
-using CustomAvatarLoader.Logging;
-using Il2CppKirurobo;
 
 namespace CustomAvatarLoader.Helpers;
 

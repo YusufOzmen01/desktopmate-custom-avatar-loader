@@ -10,18 +10,15 @@ public class Updater
     private const uint MB_ICONQUESTION = 0x00000020;
     
     private string RepositoryName {get; set;}
-
-    private ILogger Logger;
     
-    public Updater(string repository, ILogger logger)
+    public Updater(string repository)
     {
         RepositoryName = repository;
-        Logger = logger;
     }
     
     public void ShowUpdateMessageBox()
     {
-        Logger.Info("[VersionCheck] New version available.");
+        Core.Warn("[VersionCheck] New version available.");
         
         int result = CreateMessageBox(
             "A new version of the custom avatar loader is available - do you want to download it?",
@@ -38,7 +35,7 @@ public class Updater
                 break;
 
             case 7: // IDNO
-                Logger.Info("[VersionCheck] User chose to skip update for now.");
+                Core.Msg("[VersionCheck] User chose to skip update for now.");
                 break;
         }
     }
