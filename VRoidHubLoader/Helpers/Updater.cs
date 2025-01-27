@@ -20,6 +20,7 @@ public class Updater
     {
         Core.Warn("[VersionCheck] New version available.");
         
+        // TODO: replace this with our own messagebox system
         int result = CreateMessageBox(
             "A new version of the custom avatar loader is available - do you want to download it?",
             "Update Available");
