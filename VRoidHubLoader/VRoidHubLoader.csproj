@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -189,6 +189,9 @@
 		<Compile Include="Helpers\WindowHelper.cs" />
 		<Compile Include="Logging\ILogger.cs" />
 		<Compile Include="Logging\PlayerLogManager.cs" />
+		<Compile Include="Messaging\IMessageProvider.cs" />
+		<Compile Include="Messaging\Messenger.cs" />
+		<Compile Include="Messaging\MessageBox.cs" />
 		<Compile Include="Modules\VrmLoaderModule.cs" />
 		<Compile Include="Patches\MainManagerPatch.cs" />
 		<Compile Include="Patches\ModelPageManagerPatch.cs" />

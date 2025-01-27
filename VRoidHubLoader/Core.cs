@@ -1,12 +1,13 @@
-﻿namespace CustomAvatarLoader;
+namespace CustomAvatarLoader;
 
 using CustomAvatarLoader.Helpers;
+using CustomAvatarLoader.Messaging;
+using CustomAvatarLoader.Modules;
 using CustomAvatarLoader.Settings;
 using Logging;
 using System.Reflection;
 using Versioning;
 using ILogger = Logging.ILogger;
-using CustomAvatarLoader.Modules;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
@@ -18,11 +19,12 @@ public static class Core
 
     public static ISettingsProvider Settings { get; private set; }
     public static VrmLoaderModule MainModule { get; private set; }
-
+    public static IMessageProvider MessageProvider { get; private set; }
     public static void Init(ILogger logger, ISettingsProvider settings)
     {
         Logger = logger;
         Settings = settings;
+        MessageProvider = new Messenger();
     }
 
     public static void Start()

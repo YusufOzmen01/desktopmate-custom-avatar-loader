@@ -1,5 +1,3 @@
-using System.Runtime.InteropServices;
-
 namespace CustomAvatarLoader.Modules;
 
 using CustomAvatarLoader.Helpers;
@@ -20,11 +18,8 @@ using BepInEx.Unity.IL2CPP.Utils;
 public class VrmLoaderModule : MonoBehaviour
 {
     private bool init;
-
+    
     private VrmLoader VrmLoader;
-
-    [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-    private static extern int MessageBox(IntPtr hwnd, String text, String caption, uint type);
 
 #if MELON
     public readonly string VrmFolderPath = MelonEnvironment.GameRootDirectory + @"\VRM";
@@ -84,6 +79,11 @@ public class VrmLoaderModule : MonoBehaviour
         MenuManager.Instance.OpenPage(MenuManager.Instance.modelPage);
     }
 
+    private void OnGUI()
+    {
+        Core.MessageProvider.OnGUI();
+    }
+
     public bool LoadCharacter(string path)
     {
         if (!File.Exists(path))
@@ -104,7 +104,7 @@ public class VrmLoaderModule : MonoBehaviour
         if (newChara == null)
         {
             Core.Error("[Chara Loader] Failed to load VRM file: " + path);
-            Task.Run(() => { MessageBox(new IntPtr(0), "Failed to load VRM file! Make sure the VRM file is compatible!", "Error", 0x00000010 /* MB_ICONERROR */); });
+            Core.MessageProvider.ShowMessageBox("Error", "Failed to load VRM file! Make sure the VRM file is compatible!", Color.red);
 
             return false;
         }
