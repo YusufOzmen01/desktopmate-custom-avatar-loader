@@ -26,7 +26,7 @@ public class FileHelper
         ofn.fileTitle = new string(new char[64]);
         ofn.maxFileTitle = ofn.fileTitle.Length;
         ofn.initialDir = Core.MainModule.VrmFolderPath;
-        ofn.title = "Open VRM File";
+        ofn.title = "Import VRM File";
         ofn.flags = 0x00080000 | 0x00000008; // OFN_EXPLORER | OFN_FILEMUSTEXIST
 
         return ofn;
