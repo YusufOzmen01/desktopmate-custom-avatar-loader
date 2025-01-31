@@ -15,6 +15,7 @@ using MelonLoader.Utils;
 
 #if BEPINEX
 using BepInEx.Unity.IL2CPP.Utils;
+using CustomAvatarLoader.Patches;
 #endif
 
 public class VrmLoaderModule : MonoBehaviour
@@ -44,7 +45,7 @@ public class VrmLoaderModule : MonoBehaviour
         VrmLoader = new VrmLoader();
     }
 
-    private void Update()
+    private async void Update()
     {
         if (!init)
         {
@@ -62,16 +63,36 @@ public class VrmLoaderModule : MonoBehaviour
         {
             Core.Msg("OnUpdate: VrmLoaderModule F4 pressed");
 
-            // MenuManager is a singleton? sweet.
-            if (!MenuManager.Instance.IsOpen)
+            await ImportVRM();
+        }
+    }
+
+    [HideFromIl2Cpp]
+    public async Task ImportVRM()
+    {
+        string? path = await Core.FileHelper.OpenFileDialog();
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            string fileName = Path.GetFileName(path);
+            string destination = VrmFolderPath + '\\' + fileName;
+            if (!File.Exists(destination))
             {
-                #if MELON
-                MelonCoroutines.Start(CoAutoOpenModelPage());
-                #endif
-                #if BEPINEX
-                MonoBehaviourExtensions.StartCoroutine(this, CoAutoOpenModelPage());
-                #endif
+                File.Copy(path, destination);
+                ModelPageManagerPatch.SpawnButtons();
+                Core.Msg($"Copied {fileName} to VRM folder");
             }
+        }
+
+        // MenuManager is a singleton? sweet.
+        if (!MenuManager.Instance.IsOpen)
+        {
+            #if MELON   
+            MelonCoroutines.Start(CoAutoOpenModelPage());
+            #endif
+            #if BEPINEX
+            MonoBehaviourExtensions.StartCoroutine(this, CoAutoOpenModelPage());
+            #endif
         }
     }
 
