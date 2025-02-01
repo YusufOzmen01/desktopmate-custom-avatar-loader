@@ -18,14 +18,20 @@ public class FileHelper
     {
         OpenFileName ofn = new();
 
+        string[] filters = {
+            "Supported Model Files\0*.vrm;*.dmma",
+            "VRM Files\0*.vrm",
+            "Desktop Mate Modded Avatar Files\0*.dmma",
+        };
+
         ofn.structSize = Marshal.SizeOf(ofn);
-        ofn.filter = "VRM Files\0*.vrm\0";
+        ofn.filter = string.Join("\0", filters) + "\0";
         ofn.file = new string(new char[256]);
         ofn.maxFile = ofn.file.Length;
         ofn.fileTitle = new string(new char[64]);
         ofn.maxFileTitle = ofn.fileTitle.Length;
         ofn.initialDir = UnityEngine.Application.dataPath;
-        ofn.title = "Open VRM File";
+        ofn.title = "Open Model File";
         ofn.flags = 0x00080000 | 0x00000008; // OFN_EXPLORER | OFN_FILEMUSTEXIST
 
         return ofn;
