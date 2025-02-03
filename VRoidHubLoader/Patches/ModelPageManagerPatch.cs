@@ -8,11 +8,38 @@ using Il2Cpp;
 namespace CustomAvatarLoader.Patches
 {
     [HarmonyPatch(typeof(ModelPageManager), "Start")]
-    internal class ModelPageManagerPatch
+    internal static class ModelPageManagerPatch
     {
+        private static ModelPageManager MPM;
+
+        private readonly static List<GameObject> OurButtons = [];
+
         private static void Postfix(ModelPageManager __instance)
         {
-            float offset = 0.32f;
+            MPM = __instance;
+
+            GameObject import = DefaultControls.CreateButton(new DefaultControls.Resources());
+            import.transform.position = new Vector3(0.83f, 0.3275f, -1f);
+            import.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
+            import.name = "importButton";
+            import.GetComponentInChildren<Text>().text = "Import...";
+            import.GetComponent<Button>().onClick.AddListener(new Action(async () =>
+            {
+                await Core.MainModule.ImportVRM();
+            }));
+            import.transform.SetParent(MPM.mikuButton.transform.parent.transform, false);
+            SpawnButtons();
+        }
+
+        public static void SpawnButtons()
+        { 
+            foreach (GameObject button in OurButtons)
+            {
+                UnityEngine.Object.Destroy(button);
+            }
+
+            OurButtons.Clear();
+            float offset = 0.07f;
             foreach (string path in Directory.GetFiles(Core.MainModule.VrmFolderPath).Where(f => f.EndsWith(".vrm")))
             {
                 string file = Path.GetFileName(path);
@@ -29,12 +56,13 @@ namespace CustomAvatarLoader.Patches
                         Core.Settings.Set("vrmPath", path);
                         Core.Settings.SaveSettings();
 
-                        Core.Msg("OnUpdate: VrmLoaderModule file chosen");
+                        Core.Msg("Button: VrmLoaderModule file chosen");
                     }
                 }));
-                button.transform.SetParent(__instance.mikuButton.transform.parent.transform, false);
+                button.transform.SetParent(MPM.mikuButton.transform.parent.transform, false);
+                OurButtons.Add(button);
                 Core.Msg("Loaded VRM " + file);
-                offset -= 0.32f;
+                offset -= 0.25f;
             }
             Core.Msg("[Chara Loader] Custom menu buttons generated");
         }

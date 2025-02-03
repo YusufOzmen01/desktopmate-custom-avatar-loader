@@ -18,6 +18,7 @@ public static class Core
 
     public static ISettingsProvider Settings { get; private set; }
     public static VrmLoaderModule MainModule { get; private set; }
+    public static FileHelper FileHelper { get; private set; }
 
     public static void Init(ILogger logger, ISettingsProvider settings)
     {
@@ -29,6 +30,7 @@ public static class Core
     {
         var versionChecker = new GitHubVersionChecker(RepositoryName);
         var updater = new Updater(RepositoryName);
+        FileHelper = new FileHelper();
 
         var currentVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0";
 

@@ -15,6 +15,7 @@ using MelonLoader.Utils;
 
 #if BEPINEX
 using BepInEx.Unity.IL2CPP.Utils;
+using CustomAvatarLoader.Patches;
 #endif
 
 public class VrmLoaderModule : MonoBehaviour
@@ -32,6 +33,8 @@ public class VrmLoaderModule : MonoBehaviour
 #if BEPINEX
     public readonly string VrmFolderPath = BepInEx.Paths.GameRootPath + @"\VRM";
 #endif
+
+    private string? ModelToApply = null;
 
     private void Awake()
     {
@@ -58,20 +61,57 @@ public class VrmLoaderModule : MonoBehaviour
             }
         }
 
+        // After selecting a model via F4/import, we have to wait a frame to actually apply the model
+        // Attempting to do so inside of ImportVRM() causes a AccessViolationException
+        if (ModelToApply != null)
+        {
+            if (LoadCharacter(ModelToApply))
+            {
+                Core.Settings.Set("vrmPath", ModelToApply);
+                Core.Settings.SaveSettings();
+
+                Core.Msg("Update: Model file chosen");
+                ModelToApply = null;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.F4))
         {
             Core.Msg("OnUpdate: VrmLoaderModule F4 pressed");
 
-            // MenuManager is a singleton? sweet.
-            if (!MenuManager.Instance.IsOpen)
+            _ = ImportVRM();
+        }
+    }
+
+    [HideFromIl2Cpp]
+    public async Task ImportVRM()
+    {
+        string? path = await Core.FileHelper.OpenFileDialog();
+
+        if (!string.IsNullOrEmpty(path))
+        {
+            string fileName = Path.GetFileName(path);
+            string destination = VrmFolderPath + '\\' + fileName;
+            if (File.Exists(destination))
             {
-                #if MELON
-                MelonCoroutines.Start(CoAutoOpenModelPage());
-                #endif
-                #if BEPINEX
-                MonoBehaviourExtensions.StartCoroutine(this, CoAutoOpenModelPage());
-                #endif
+                // TODO: allow the user to decide if the old file should be overwritten
+                Core.Warn("Duplicate model file detected. The old model file will be overwritten!");
             }
+            File.Copy(path, destination, true);
+            ModelPageManagerPatch.SpawnButtons();
+            Core.Msg($"Added {fileName} to VRM folder");
+            ModelToApply = destination;
+        }
+
+        // MenuManager is a singleton? sweet.
+        if (!MenuManager.Instance.IsOpen)
+        {
+            #if MELON   
+            MelonCoroutines.Start(CoAutoOpenModelPage());
+            #endif
+            #if BEPINEX
+            MonoBehaviourExtensions.StartCoroutine(this, CoAutoOpenModelPage());
+            #endif
         }
     }
 

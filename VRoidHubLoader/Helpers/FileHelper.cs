@@ -1,10 +1,11 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections;
+using System.Runtime.InteropServices;
 
 namespace CustomAvatarLoader.Helpers;
 
 public class FileHelper
 {
-    public Task<string> OpenFileDialog()
+    public Task<string?> OpenFileDialog()
     {
         var ofn = GetOpenFileName();
 
@@ -24,8 +25,8 @@ public class FileHelper
         ofn.maxFile = ofn.file.Length;
         ofn.fileTitle = new string(new char[64]);
         ofn.maxFileTitle = ofn.fileTitle.Length;
-        ofn.initialDir = UnityEngine.Application.dataPath;
-        ofn.title = "Open VRM File";
+        ofn.initialDir = Core.MainModule.VrmFolderPath;
+        ofn.title = "Import VRM File";
         ofn.flags = 0x00080000 | 0x00000008; // OFN_EXPLORER | OFN_FILEMUSTEXIST
 
         return ofn;
