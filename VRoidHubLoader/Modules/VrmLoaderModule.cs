@@ -47,7 +47,7 @@ public class VrmLoaderModule : MonoBehaviour
         VrmLoader = new VrmLoader();
     }
 
-    private async void Update()
+    private void Update()
     {
         if (!init)
         {
@@ -79,7 +79,7 @@ public class VrmLoaderModule : MonoBehaviour
         {
             Core.Msg("OnUpdate: VrmLoaderModule F4 pressed");
 
-            await ImportVRM();
+            _ = ImportVRM();
         }
     }
 
